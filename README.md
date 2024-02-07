@@ -46,7 +46,7 @@
     nGetResp.raw; // Raw text on page
 
     // Request status (NeoUrl::statuscode)
-    ngetResp.status;
+    nGetResp.status;
 
     // Request status (numeric value)
     (int)nGetResp.status; // Request status
