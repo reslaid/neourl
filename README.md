@@ -36,7 +36,7 @@
 - **Sending a request using the post method**
     ```cpp
     // Post request
-    NeoUrl::Response nPostResp = rq.post(
+    NeoUrl::Response nPostResp = nrq.post(
         "DATA TO POST"
     );
     ```
