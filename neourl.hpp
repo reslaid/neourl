@@ -1,14 +1,14 @@
 #ifndef _REQUIRE_NEOURL
-  #define _REQUIRE_NEOURL
+#define _REQUIRE_NEOURL
 #endif
 
 #pragma region includes
 
-  #include <iostream>  // Input-output stream operations
-  #include <regex>     // Regular expression support
-  #include <string>    // String class
-  #include <sstream>   // Input/output stream class to operate on strings
-  #include <iomanip>   // Parameterized stream manipulators
+#include <iostream>  // Input-output stream operations
+#include <regex>     // Regular expression support
+#include <string>    // String class
+#include <sstream>   // Input/output stream class to operate on strings
+#include <iomanip>   // Parameterized stream manipulators
 
 #pragma endregion
 
@@ -16,16 +16,16 @@
 
 #ifdef _WIN32
 
-  #include <windows.h>    // Windows API main header
-  #include <wininet.h>    // Windows Internet API main header
-  
-    #pragma comment(lib, "wininet.lib")  // Linking with WinINet library
+#include <windows.h>    // Windows API main header
+#include <wininet.h>    // Windows Internet API main header
+
+#pragma comment(lib, "wininet.lib")  // Linking with WinINet library
 
 #else
 
-  #include <sys/socket.h>  // Definitions of structures needed for sockets
-  #include <netdb.h>       // Definitions for network database operations
-  #include <unistd.h>      // Symbolic Constants and Macros for POSIX operating systems
+#include <sys/socket.h>  // Definitions of structures needed for sockets
+#include <netdb.h>       // Definitions for network database operations
+#include <unistd.h>      // Symbolic Constants and Macros for POSIX operating systems
 
 #endif
 
@@ -33,7 +33,7 @@
 
 #pragma region data types
 
-  typedef std::string responseraw;  // Typedef for raw response data
+typedef std::string responseraw;  // Typedef for raw response data
 
 #pragma endregion
 
@@ -208,12 +208,12 @@ namespace NeoUrl
             std::string requestData = method + " " + url.getPath() + url.getQuery() + " HTTP/1.1\r\n";
             requestData += "Host: " + url.getDomain() + "\r\n";
             requestData += "Connection: close\r\n";
-            if (method == "POST") {
+            if (method == "POST" || method == "PUT" || method == "DELETE") {
                 requestData += "Content-Length: " + std::to_string(data.length()) + "\r\n";
                 requestData += "Content-Type: application/x-www-form-urlencoded\r\n";
             }
             requestData += "\r\n";
-            if (method == "POST") {
+            if (method == "POST" || method == "PUT" || method == "DELETE") {
                 requestData += data;
             }
 
@@ -294,12 +294,12 @@ namespace NeoUrl
             std::string requestData = method + " " + url.getPath() + url.getQuery() + " HTTP/1.1\r\n";
             requestData += "Host: " + url.getDomain() + "\r\n";
             requestData += "Connection: close\r\n";
-            if (method == "POST") {
+            if (method == "POST" || method == "PUT" || method == "DELETE") {
                 requestData += "Content-Length: " + std::to_string(data.length()) + "\r\n";
                 requestData += "Content-Type: application/x-www-form-urlencoded\r\n";
             }
             requestData += "\r\n";
-            if (method == "POST") {
+            if (method == "POST" || method == "PUT" || method == "DELETE") {
                 requestData += data;
             }
 
@@ -385,6 +385,18 @@ namespace NeoUrl
         Response post(const std::string& postData)
         {
             return performRequest("POST", postData);
+        }
+
+        // Perform PUT request
+        Response put(const std::string& postData)
+        {
+            return performRequest("PUT", postData);
+        }
+
+        // Perform DELETE request
+        Response del(const std::string& postData)
+        {
+            return performRequest("DELETE", postData);
         }
     };
 
