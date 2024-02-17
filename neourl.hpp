@@ -211,20 +211,16 @@ namespace NeoUrl
             if (!json.empty()) {
                 requestData += "Content-Length: " + std::to_string(json.length()) + "\r\n";
                 requestData += "Content-Type: application/json\r\n";
-            
+
                 requestData += "\r\n";
-                if (!json.empty()) {
-                    requestData += json;
-                }
+                requestData += json;
             }
-            if (method == "POST" || method == "PUT" || method == "DELETE") {
+            if (!data.empty()) {
                 requestData += "Content-Length: " + std::to_string(data.length()) + "\r\n";
                 requestData += "Content-Type: application/x-www-form-urlencoded\r\n";
-            
+
                 requestData += "\r\n";
-                if (!json.empty()) {
-                    requestData += data;
-                }
+                requestData += data;
             }
 
             // Socket initialization
@@ -311,10 +307,10 @@ namespace NeoUrl
                 requestData += "\r\n";
                 requestData += json;
             }
-            if (method == "POST" || method == "PUT" || method == "DELETE") {
+            if (!data.empty()) {
                 requestData += "Content-Length: " + std::to_string(data.length()) + "\r\n";
                 requestData += "Content-Type: application/x-www-form-urlencoded\r\n";
-            
+
                 requestData += "\r\n";
                 requestData += data;
             }
@@ -398,19 +394,19 @@ namespace NeoUrl
         }
 
         // Perform POST request
-        Response post(const std::string& postData, const std::string& json = "")
+        Response post(const std::string& postData = "", const std::string& json = "")
         {
             return performRequest("POST", postData, json);
         }
 
         // Perform PUT request
-        Response put(const std::string& postData, const std::string& json = "")
+        Response put(const std::string& postData = "", const std::string& json = "")
         {
             return performRequest("PUT", postData, json);
         }
 
         // Perform DELETE request
-        Response del(const std::string& postData, const std::string& json = "")
+        Response del(const std::string& postData = "", const std::string& json = "")
         {
             return performRequest("DELETE", postData, json);
         }
