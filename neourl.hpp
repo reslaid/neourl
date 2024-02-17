@@ -200,7 +200,7 @@ namespace NeoUrl
         URL url;  // URL object
 
         // Function to perform the request
-        Response performRequest(const std::string& method, const std::string& data = "") {
+        Response performRequest(const std::string& method, const std::string& data = "", const std::string& json = "") {
 #ifndef _WIN32
             Response response;
 
@@ -208,13 +208,23 @@ namespace NeoUrl
             std::string requestData = method + " " + url.getPath() + url.getQuery() + " HTTP/1.1\r\n";
             requestData += "Host: " + url.getDomain() + "\r\n";
             requestData += "Connection: close\r\n";
+            if (!json.empty()) {
+                requestData += "Content-Length: " + std::to_string(json.length()) + "\r\n";
+                requestData += "Content-Type: application/json\r\n";
+            
+                requestData += "\r\n";
+                if (!json.empty()) {
+                    requestData += json;
+                }
+            }
             if (method == "POST" || method == "PUT" || method == "DELETE") {
                 requestData += "Content-Length: " + std::to_string(data.length()) + "\r\n";
                 requestData += "Content-Type: application/x-www-form-urlencoded\r\n";
-            }
-            requestData += "\r\n";
-            if (method == "POST" || method == "PUT" || method == "DELETE") {
-                requestData += data;
+            
+                requestData += "\r\n";
+                if (!json.empty()) {
+                    requestData += data;
+                }
             }
 
             // Socket initialization
@@ -294,12 +304,18 @@ namespace NeoUrl
             std::string requestData = method + " " + url.getPath() + url.getQuery() + " HTTP/1.1\r\n";
             requestData += "Host: " + url.getDomain() + "\r\n";
             requestData += "Connection: close\r\n";
+            if (!json.empty()) {
+                requestData += "Content-Length: " + std::to_string(json.length()) + "\r\n";
+                requestData += "Content-Type: application/json\r\n";
+
+                requestData += "\r\n";
+                requestData += json;
+            }
             if (method == "POST" || method == "PUT" || method == "DELETE") {
                 requestData += "Content-Length: " + std::to_string(data.length()) + "\r\n";
                 requestData += "Content-Type: application/x-www-form-urlencoded\r\n";
-            }
-            requestData += "\r\n";
-            if (method == "POST" || method == "PUT" || method == "DELETE") {
+            
+                requestData += "\r\n";
                 requestData += data;
             }
 
@@ -376,27 +392,27 @@ namespace NeoUrl
         }
 
         // Perform GET request
-        Response get()
+        Response get(const std::string& postData = "", const std::string& json = "")
         {
-            return performRequest("GET");
+            return performRequest("GET", postData, json);
         }
 
         // Perform POST request
-        Response post(const std::string& postData)
+        Response post(const std::string& postData, const std::string& json = "")
         {
-            return performRequest("POST", postData);
+            return performRequest("POST", postData, json);
         }
 
         // Perform PUT request
-        Response put(const std::string& postData)
+        Response put(const std::string& postData, const std::string& json = "")
         {
-            return performRequest("PUT", postData);
+            return performRequest("PUT", postData, json);
         }
 
         // Perform DELETE request
-        Response del(const std::string& postData)
+        Response del(const std::string& postData, const std::string& json = "")
         {
-            return performRequest("DELETE", postData);
+            return performRequest("DELETE", postData, json);
         }
     };
 
